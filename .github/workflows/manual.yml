@@ -1,32 +1,51 @@
-# This is a basic workflow that is manually triggered
+==========================================
+FreeRDP: A Remote Desktop Protocol client.
+==========================================
 
-name: Manual workflow
+FreeRDP is a free remote desktop protocol client that implements RDP following
+the documentation released under the Microsoft Open Specification Promise.
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
-        # The data type of the input
-        type: string
+Support
+--------------------------------------------------
+* Homepage: http://freerdp.com/
+* Wiki: http://www.freerdp.com/wiki/
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+Libraries used (Ubuntu package names - may not apply to all environments)
+--------------------------------------------------
+* Xorg-dev
+* libssl-dev (OpenSSL)
+* libcups2-dev (CUPS 1.3/1.4)
+* libasound2-dev (ALSA)
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+Using git-master source
+--------------------------------------------------
+1. Install autogen, automake, and gettext.
+2. "git clone git://github.com/FreeRDP/FreeRDP.git"
+3. "cd freerdp"
+4. "sh autogen.sh"
+
+Compiling & installing (git-master or release)
+--------------------------------------------------
+1. As a root-capable user, install what libraries you require.
+2a. Stable users: download the latest release archive.
+2b. Edge users: follow the git-master source procedure.
+3. "./configure"
+4. "make"
+5. As a root-capable user, "make install"
+
+The default is to install under /usr/local.  This can be changed by adding
+--prefix=directory to the configure line.
+
+Using FreeRDP
+--------------------------------------------------
+* Running xfreerdp (or relative binary) by itself will display help.
+* Note that the server name must be the last option
+* xfreerdp plugins expand features available by the software. They are
+  installed in (install)/lib/freerdp/ .
+
+Examples of using xfreerdp
+--------------------------------------------------
+* Remote clipboard access
+  xfreerdp --plugin cliprdr -g 900x600 (server)
+* Comport redirection & clipboard access
+  xfreerdp --plugin cliprdr --plugin rdpdr --data serial:COM1:/dev/ttyUSB0 -- -g 900x600 (server)
